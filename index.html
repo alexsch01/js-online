@@ -51,12 +51,12 @@
                 console.JSOnline_logs.push([err.toString()])
             }
 
-            let output = ""
+            const arr = []
             for(const i in console.JSOnline_logs) {
-                output += console.JSOnline_logs[i].join(" ") + "\n"
+                arr.push(console.JSOnline_logs[i].join(" "))
             }
             localStorage.setItem('code', globalThis.JSOnline_editor.getValue())
-            localStorage.setItem('output', output)
+            localStorage.setItem('output', arr.join("\n"))
 
             location.reload()
         }
