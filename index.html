@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS Online</title>
+
+    <script src="ace.js"></script>
+
+    <script>
+        /** @returns {Element} */
+        function $(selector) {
+            return document.querySelector(selector)
+        }
+
+        /** @returns {Array<Element>} */
+        function $$(selector) {
+            return document.querySelectorAll(selector)
+        }
+    </script>
+
+    <script>
+        window.onload = async function() {
+            globalThis.JSOnline_editor = ace.edit("code")
+            globalThis.JSOnline_editor.setShowPrintMargin(false)
+            globalThis.JSOnline_editor = globalThis.JSOnline_editor.getSession()
+
+            globalThis.JSOnline_editor.setUseWorker(false)
+            globalThis.JSOnline_editor.setMode("ace/mode/javascript")
+
+            $('[class=" ace_editor ace-tm"]').setAttribute('style', 'width: 50%; font-size: 18px')
+            $('#output').setAttribute('style', 'width: 50%; font-size: 18px')
+
+            globalThis.JSOnline_editor.setValue(localStorage.getItem('code') ?? '')
+            $('#output').value = localStorage.getItem('output') ?? ''
+
+            localStorage.removeItem('code')
+            localStorage.removeItem('output')
+        }
+
+        console.JSOnline_logs = []
+        console.JSOnline_defaultLog = console.log
+        console.log = function(...args) {
+            args = args.map(elem => {
+                if(typeof elem == 'object') {
+                    return JSON.stringify(elem)
+                } else {
+                    return elem
+                }
+            })
+            console.JSOnline_logs.push(args)
+            console.JSOnline_defaultLog(...args)
+        }
+
+        function JSOnline_runClick() {
+            console.JSOnline_logs.length = 0
+
+            try {
+                eval(globalThis.JSOnline_editor.getValue())
+            } catch(err) {
+                console.JSOnline_logs.push([err.toString()])
+            }
+
+            let output = ""
+            for(const i in console.JSOnline_logs) {
+                output += console.JSOnline_logs[i].join(" ") + "\n"
+            }
+            localStorage.setItem('code', globalThis.JSOnline_editor.getValue())
+            localStorage.setItem('output', output)
+
+            location.reload()
+        }
+    </script>
+</head>
+<body>
+    <strong style="margin-left: 10vw;">JS Online</strong>
+    <button onclick="JSOnline_runClick()" style="margin-left: 30vw;">Run</button>
+    <div style="display: flex; height: 800px">
+        <textarea id="code"></textarea>
+        <textarea id="output" disabled></textarea>
+    </div>
+</body>
+</html>
