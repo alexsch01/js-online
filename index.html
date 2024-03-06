@@ -31,8 +31,8 @@
             $('[class=" ace_editor ace-tm"]').setAttribute('style', 'width: 50%; font-size: 18px')
             $('#output').setAttribute('style', 'width: 50%; font-size: 18px')
 
-            globalThis.JSOnline_editor.setValue(localStorage.getItem('code') ?? '')
-            $('#output').value = localStorage.getItem('output') ?? ''
+            globalThis.JSOnline_editor.setValue(localStorage.getItem('code'))
+            $('#output').value = localStorage.getItem('output')
 
             localStorage.removeItem('code')
             localStorage.removeItem('output')
