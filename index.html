@@ -16,7 +16,7 @@
             globalThis.JSOnline_editor.setUseWorker(false)
             globalThis.JSOnline_editor.setMode("ace/mode/javascript")
 
-            document.querySelector('[class=" ace_editor ace-tm"]').setAttribute('style', 'width: 50%; font-size: 18px')
+            document.querySelector('#mainDiv > pre').setAttribute('style', 'width: 50%; font-size: 18px')
             document.querySelector('#output').setAttribute('style', 'width: 50%; font-size: 18px')
 
             globalThis.JSOnline_editor.setValue(localStorage.getItem('code') ?? '')
@@ -65,7 +65,7 @@
 <body>
     <strong style="margin-left: 10vw;">JS Online</strong>
     <button onclick="JSOnline_runClick()" style="margin-left: 30vw;">Run</button>
-    <div style="display: flex; height: 800px">
+    <div id="mainDiv" style="display: flex; height: 800px">
         <textarea id="code"></textarea>
         <textarea id="output" disabled></textarea>
     </div>
