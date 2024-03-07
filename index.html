@@ -18,13 +18,13 @@
             globalThis.JSOnline_editor.session.setMode("ace/mode/javascript")
 
             if(window.matchMedia('screen and (max-width: 768px)').matches) {
-                const x = document.querySelector('#mainDiv')
-                x.parentNode.insertBefore(document.querySelector('#output'), x.nextSibling)
-                x.parentNode.insertBefore(document.querySelector('#mainDiv > pre'), x.nextSibling)
-                x.remove()
+                const mainDiv = document.querySelector('#mainDiv')
+                mainDiv.parentNode.insertBefore(document.querySelector('#output'), mainDiv.nextSibling)
+                mainDiv.parentNode.insertBefore(document.querySelector('#mainDiv > pre'), mainDiv.nextSibling)
+                mainDiv.remove()
 
                 document.querySelector('pre').setAttribute('style', `width: 100%; height: ${Math.floor(window.innerHeight / 2)}px; font-size: 14px`)
-                document.querySelector('#output').setAttribute('style', `width: 100%; height: ${Math.floor(window.innerWidth / 2)}px; font-size: 14px`)
+                document.querySelector('#output').setAttribute('style', `width: 100%; height: ${Math.floor(window.innerHeight / 2)}px; font-size: 14px`)
             } else {
                 document.querySelector('#mainDiv > pre').setAttribute('style', 'width: 50%; font-size: 18px')
                 document.querySelector('#output').setAttribute('style', 'width: 50%; font-size: 18px')
