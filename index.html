@@ -34,7 +34,6 @@
         }
 
         console.JSOnline_logs = []
-        console.JSOnline_defaultLog = console.log
         console.log = function(...args) {
             args = args.map(elem => {
                 if(elem === undefined) {
@@ -46,7 +45,6 @@
                 }
             })
             console.JSOnline_logs.push(args)
-            console.JSOnline_defaultLog(...args)
         }
 
         function JSOnline_runClick() {
