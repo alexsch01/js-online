@@ -23,8 +23,8 @@
                 x.parentNode.insertBefore(document.querySelector('#mainDiv > pre'), x.nextSibling)
                 x.remove()
 
-                document.querySelector('pre').setAttribute('style', 'width: 100%; height: 400px; font-size: 16px')
-                document.querySelector('#output').setAttribute('style', 'width: 100%; height: 400px; font-size: 16px')
+                document.querySelector('pre').setAttribute('style', `width: 100%; height: ${Math.floor(window.innerHeight / 2)}px; font-size: 14px`)
+                document.querySelector('#output').setAttribute('style', `width: 100%; height: ${Math.floor(window.innerWidth / 2)}px; font-size: 14px`)
             } else {
                 document.querySelector('#mainDiv > pre').setAttribute('style', 'width: 50%; font-size: 18px')
                 document.querySelector('#output').setAttribute('style', 'width: 50%; font-size: 18px')
