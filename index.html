@@ -17,10 +17,7 @@
             globalThis.JSOnline_editor.session.setUseWorker(false)
             globalThis.JSOnline_editor.session.setMode("ace/mode/javascript")
 
-            if(
-                (window.innerWidth < window.innerHeight && window.matchMedia('screen and (max-height: 768px)').matches) ||
-                (window.innerWidth >= window.innerHeight && window.matchMedia('screen and (max-width: 768px)').matches)
-            ) {
+            if(window.matchMedia('screen and (max-width: 768px)').matches) {
                 const mainDiv = document.querySelector('#mainDiv')
                 mainDiv.parentNode.insertBefore(document.querySelector('#output'), mainDiv.nextSibling)
                 mainDiv.parentNode.insertBefore(document.querySelector('#mainDiv > pre'), mainDiv.nextSibling)
