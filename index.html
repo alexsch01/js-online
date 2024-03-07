@@ -14,10 +14,8 @@
         window.onload = async function() {
             globalThis.JSOnline_editor = ace.edit("code")
             globalThis.JSOnline_editor.setShowPrintMargin(false)
-            globalThis.JSOnline_editor = globalThis.JSOnline_editor.getSession()
-
-            globalThis.JSOnline_editor.setUseWorker(false)
-            globalThis.JSOnline_editor.setMode("ace/mode/javascript")
+            globalThis.JSOnline_editor.getSession().setUseWorker(false)
+            globalThis.JSOnline_editor.getSession().setMode("ace/mode/javascript")
 
             document.querySelector('#mainDiv > pre').setAttribute('style', 'width: 50%; font-size: 18px')
             document.querySelector('#output').setAttribute('style', 'width: 50%; font-size: 18px')
