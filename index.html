@@ -17,7 +17,10 @@
             globalThis.JSOnline_editor.session.setUseWorker(false)
             globalThis.JSOnline_editor.session.setMode("ace/mode/javascript")
 
-            if(window.matchMedia('screen and (max-width: 768px)').matches) {
+            if(
+                (window.innerWidth < window.innerHeight && window.matchMedia('screen and (max-height: 768px)').matches) ||
+                (window.innerWidth >= window.innerHeight && window.matchMedia('screen and (max-width: 768px)').matches)
+            ) {
                 const mainDiv = document.querySelector('#mainDiv')
                 mainDiv.parentNode.insertBefore(document.querySelector('#output'), mainDiv.nextSibling)
                 mainDiv.parentNode.insertBefore(document.querySelector('#mainDiv > pre'), mainDiv.nextSibling)
@@ -87,7 +90,7 @@
     </script>
 </head>
 <body>
-    <strong style="margin-left: 10vw;">JS Online</strong>
+    <strong style="margin-left: 10vw">JS Online</strong>
     <button onclick="JSOnline_runClick()" style="margin-left: 30vw">Run</button>
     <div id="mainDiv" style="display: flex; height: 800px">
         <textarea id="code"></textarea>
