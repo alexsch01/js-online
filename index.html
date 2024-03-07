@@ -14,8 +14,8 @@
         window.onload = async function() {
             globalThis.JSOnline_editor = ace.edit("code")
             globalThis.JSOnline_editor.setShowPrintMargin(false)
-            globalThis.JSOnline_editor.getSession().setUseWorker(false)
-            globalThis.JSOnline_editor.getSession().setMode("ace/mode/javascript")
+            globalThis.JSOnline_editor.session.setUseWorker(false)
+            globalThis.JSOnline_editor.session.setMode("ace/mode/javascript")
 
             document.querySelector('#mainDiv > pre').setAttribute('style', 'width: 50%; font-size: 18px')
             document.querySelector('#output').setAttribute('style', 'width: 50%; font-size: 18px')
@@ -24,10 +24,13 @@
             document.querySelector('#output').value = localStorage.getItem('output') ?? ''
             globalThis.JSOnline_editor.selection.moveTo(localStorage.getItem('cursorRow') ?? 0, localStorage.getItem('cursorColumn') ?? 0)
 
-            localStorage.removeItem('code')
-            localStorage.removeItem('output')
-            localStorage.removeItem('cursorRow')
-            localStorage.removeItem('cursorColumn')
+            const localStorageKeys = Object.keys(localStorage)
+            for(const key of localStorageKeys) {
+                if(key.startsWith('$undoManager')) {
+                    globalThis.JSOnline_editor.session.$undoManager[key.split('$undoManager-')[1]] = JSON.parse(localStorage.getItem(key))
+                }
+                localStorage.removeItem(key)
+            }
         }
 
         console.JSOnline_logs = []
@@ -63,6 +66,13 @@
             localStorage.setItem('output', arr.join("\n"))
             localStorage.setItem('cursorRow', globalThis.JSOnline_editor.selection.cursor.row)
             localStorage.setItem('cursorColumn', globalThis.JSOnline_editor.selection.cursor.column)
+
+            const undoManager = globalThis.JSOnline_editor.session.$undoManager
+            for(const key in undoManager) {
+                if(typeof undoManager[key] != 'function' && key != '$session') {
+                    localStorage.setItem('$undoManager-' + key, JSON.stringify(undoManager[key]))
+                }
+            }
 
             location.reload()
         }
