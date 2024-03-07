@@ -17,8 +17,18 @@
             globalThis.JSOnline_editor.session.setUseWorker(false)
             globalThis.JSOnline_editor.session.setMode("ace/mode/javascript")
 
-            document.querySelector('#mainDiv > pre').setAttribute('style', 'width: 50%; font-size: 18px')
-            document.querySelector('#output').setAttribute('style', 'width: 50%; font-size: 18px')
+            if(window.matchMedia('screen and (max-width: 768px)').matches) {
+                const x = document.querySelector('#mainDiv')
+                x.parentNode.insertBefore(document.querySelector('#output'), x.nextSibling)
+                x.parentNode.insertBefore(document.querySelector('#mainDiv > pre'), x.nextSibling)
+                x.remove()
+
+                document.querySelector('pre').setAttribute('style', 'width: 100%; height: 400px; font-size: 16px')
+                document.querySelector('#output').setAttribute('style', 'width: 100%; height: 400px; font-size: 16px')
+            } else {
+                document.querySelector('#mainDiv > pre').setAttribute('style', 'width: 50%; font-size: 18px')
+                document.querySelector('#output').setAttribute('style', 'width: 50%; font-size: 18px')
+            }
 
             globalThis.JSOnline_editor.setValue(localStorage.getItem('code') ?? '')
             document.querySelector('#output').value = localStorage.getItem('output') ?? ''
@@ -78,7 +88,7 @@
 </head>
 <body>
     <strong style="margin-left: 10vw;">JS Online</strong>
-    <button onclick="JSOnline_runClick()" style="margin-left: 30vw;">Run</button>
+    <button onclick="JSOnline_runClick()" style="margin-left: 30vw">Run</button>
     <div id="mainDiv" style="display: flex; height: 800px">
         <textarea id="code"></textarea>
         <textarea id="output" disabled></textarea>
