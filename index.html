@@ -24,9 +24,12 @@
 
             globalThis.JSOnline_editor.setValue(localStorage.getItem('code') ?? '')
             document.querySelector('#output').value = localStorage.getItem('output') ?? ''
+            globalThis.JSOnline_editor.selection.moveTo(localStorage.getItem('cursorRow') ?? 0, localStorage.getItem('cursorColumn') ?? 0)
 
             localStorage.removeItem('code')
             localStorage.removeItem('output')
+            localStorage.removeItem('cursorRow')
+            localStorage.removeItem('cursorColumn')
         }
 
         console.JSOnline_logs = []
@@ -60,6 +63,8 @@
             }
             localStorage.setItem('code', globalThis.JSOnline_editor.getValue())
             localStorage.setItem('output', arr.join("\n"))
+            localStorage.setItem('cursorRow', globalThis.JSOnline_editor.selection.cursor.row)
+            localStorage.setItem('cursorColumn', globalThis.JSOnline_editor.selection.cursor.column)
 
             location.reload()
         }
