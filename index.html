@@ -31,13 +31,12 @@
             }
 
             const localStorageData = JSON.parse(localStorage.getItem('js-online') ?? '{}')
-            if(Object.keys(localStorageData).length != 0) {
+            const localStorageKeys = Object.keys(localStorageData)
+            if(localStorageKeys.length != 0) {
                 globalThis.JSOnline_editor.setValue(localStorageData['code'])
                 document.querySelector('#output').value = localStorageData['output']
                 globalThis.JSOnline_editor.selection.moveTo(localStorageData['cursorRow'], localStorageData['cursorColumn'])
             }
-
-            const localStorageKeys = Object.keys(localStorageData)
             for(const key of localStorageKeys) {
                 if(key.startsWith('$undoManager')) {
                     globalThis.JSOnline_editor.session.$undoManager[key.split('$undoManager-')[1]] = JSON.parse(localStorageData[key])
