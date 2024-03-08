@@ -34,13 +34,7 @@
             document.querySelector('#output').value = localStorage.getItem('output') ?? ''
             globalThis.JSOnline_editor.selection.moveTo(localStorage.getItem('cursorRow') ?? 0, localStorage.getItem('cursorColumn') ?? 0)
 
-            const localStorageKeys = Object.keys(localStorage)
-            for(const key of localStorageKeys) {
-                if(key.startsWith('$undoManager')) {
-                    globalThis.JSOnline_editor.session.$undoManager[key.split('$undoManager-')[1]] = JSON.parse(localStorage.getItem(key))
-                }
-                localStorage.removeItem(key)
-            }
+            localStorage.clear()
         }
 
         console.JSOnline_logs = []
