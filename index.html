@@ -37,7 +37,7 @@
                 globalThis.JSOnline_editor.selection.moveTo(localStorageData['cursorRow'], localStorageData['cursorColumn'])
             }
 
-            const localStorageKeys = Object.keys(localStorage)
+            const localStorageKeys = Object.keys(localStorageData)
             for(const key of localStorageKeys) {
                 if(key.startsWith('$undoManager')) {
                     globalThis.JSOnline_editor.session.$undoManager[key.split('$undoManager-')[1]] = JSON.parse(localStorageData[key])
