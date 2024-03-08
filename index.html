@@ -31,11 +31,9 @@
             }
 
             const localStorageData = JSON.parse(localStorage.getItem('js-online') ?? '{}')
-            if(Object.keys(localStorageData).length != 0) {
-                globalThis.JSOnline_editor.setValue(localStorageData['code'])
-                document.querySelector('#output').value = localStorageData['output']
-                globalThis.JSOnline_editor.selection.moveTo(localStorageData['cursorRow'], localStorageData['cursorColumn'])
-            }
+            globalThis.JSOnline_editor.setValue(localStorageData['code'] ?? '')
+            document.querySelector('#output').value = localStorageData['output'] ?? ''
+            globalThis.JSOnline_editor.selection.moveTo(localStorageData['cursorRow'] ?? 0, localStorageData['cursorColumn'] ?? 0)
 
             const localStorageKeys = Object.keys(localStorageData)
             for(const key of localStorageKeys) {
