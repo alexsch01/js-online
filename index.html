@@ -30,11 +30,21 @@
                 document.querySelector('#output').setAttribute('style', 'width: 50%; font-size: 18px')
             }
 
-            globalThis.JSOnline_editor.setValue(localStorage.getItem('code') ?? '')
-            document.querySelector('#output').value = localStorage.getItem('output') ?? ''
-            globalThis.JSOnline_editor.selection.moveTo(localStorage.getItem('cursorRow') ?? 0, localStorage.getItem('cursorColumn') ?? 0)
+            const localStorageData = JSON.parse(localStorage.getItem('js-online') ?? '{}')
+            if(Object.keys(localStorageData).length != 0) {
+                globalThis.JSOnline_editor.setValue(localStorageData['code'])
+                document.querySelector('#output').value = localStorageData['output']
+                globalThis.JSOnline_editor.selection.moveTo(localStorageData['cursorRow'], localStorageData['cursorColumn'])
+            }
 
-            localStorage.clear()
+            const localStorageKeys = Object.keys(localStorage)
+            for(const key of localStorageKeys) {
+                if(key.startsWith('$undoManager')) {
+                    globalThis.JSOnline_editor.session.$undoManager[key.split('$undoManager-')[1]] = JSON.parse(localStorageData[key])
+                }
+            }
+
+            localStorage.removeItem('js-online')
         }
 
         console.JSOnline_logs = []
@@ -64,17 +74,22 @@
             for(const i in console.JSOnline_logs) {
                 arr.push(console.JSOnline_logs[i].join(" "))
             }
-            localStorage.setItem('code', globalThis.JSOnline_editor.getValue())
-            localStorage.setItem('output', arr.join("\n"))
-            localStorage.setItem('cursorRow', globalThis.JSOnline_editor.selection.cursor.row)
-            localStorage.setItem('cursorColumn', globalThis.JSOnline_editor.selection.cursor.column)
+
+            const localStorageData = {
+                code: globalThis.JSOnline_editor.getValue(),
+                output: arr.join("\n"),
+                cursorRow: globalThis.JSOnline_editor.selection.cursor.row,
+                cursorColumn: globalThis.JSOnline_editor.selection.cursor.column
+            }
 
             const undoManager = globalThis.JSOnline_editor.session.$undoManager
             for(const key in undoManager) {
                 if(typeof undoManager[key] != 'function' && key != '$session') {
-                    localStorage.setItem('$undoManager-' + key, JSON.stringify(undoManager[key]))
+                    localStorageData['$undoManager-' + key] = JSON.stringify(undoManager[key])
                 }
             }
+
+            localStorage.setItem('js-online', JSON.stringify(localStorageData))
 
             location.reload()
         }
