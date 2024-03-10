@@ -35,6 +35,9 @@
             globalThis.JSOnline_editor.setValue(localStorageData['code'] ?? '')
             document.querySelector('#output').value = localStorageData['output'] ?? ''
             globalThis.JSOnline_editor.selection.moveTo(localStorageData['cursorRow'] ?? 0, localStorageData['cursorColumn'] ?? 0)
+            if('code' in localStorageData) {
+                globalThis.JSOnline_editor.focus()
+            }
 
             for(const key in localStorageData) {
                 if(key.startsWith('$undoManager')) {
