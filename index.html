@@ -44,9 +44,11 @@
                 session.$undoManager.fromJSON(state.undoManager)
                 session.setScrollTop(state.scrollTop)
                 session.setScrollLeft(state.scrollLeft)
-                state.folds.forEach(fold => {
-                    session.addFold(fold.placeholder, fold.range)
-                })
+                try {
+                    state.folds.forEach(fold => {
+                        session.addFold(fold.placeholder, fold.range)
+                    })
+                } catch(_) {}
 
                 globalThis.JSOnline_editor.focus()
             } else {
