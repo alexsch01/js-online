@@ -64,8 +64,6 @@
         }
 
         function JSOnline_runClick() {
-            console.JSOnline_logs.length = 0
-
             try {
                 eval(globalThis.JSOnline_editor.getValue())
             } catch(err) {
