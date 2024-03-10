@@ -17,6 +17,7 @@
 
             const session = globalThis.JSOnline_editor.session
             session.setUseWorker(false)
+            session.setUseWrapMode(true)
             session.setMode("ace/mode/javascript")
 
             if(window.matchMedia('screen and (max-width: 768px)').matches) {
@@ -40,6 +41,9 @@
 
                 session.setValue(state.value)
                 session.selection.fromJSON(state.selection)
+                session.$undoManager.fromJSON(state.undoManager)
+                session.setScrollTop(state.scrollTop)
+                session.setScrollLeft(state.scrollLeft)
 
                 globalThis.JSOnline_editor.focus()
             } else {
@@ -81,7 +85,10 @@
                 output: arr.join("\n"),
                 ace_state: {
                     value: session.getValue(),
-                    selection: session.selection.toJSON()
+                    selection: session.selection.toJSON(),
+                    undoManager: session.$undoManager.toJSON(),
+                    scrollTop: session.getScrollTop(),
+                    scrollLeft: session.getScrollLeft(),
                 }
             }
 
