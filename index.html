@@ -49,6 +49,8 @@
                 session.setScrollTop(state.scrollLeft)
 
                 globalThis.JSOnline_editor.focus()
+            } else {
+                session.setValue('')
             }
 
             localStorage.removeItem('js-online')
