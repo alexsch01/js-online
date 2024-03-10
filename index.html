@@ -41,6 +41,8 @@
                 session.setValue(state.value)
                 session.selection.fromJSON(state.selection)
                 session.$undoManager.fromJSON(state.undoManager)
+                session.setScrollTop(state.scrollTop)
+                session.setScrollLeft(state.scrollLeft)
 
                 globalThis.JSOnline_editor.focus()
             } else {
@@ -84,6 +86,8 @@
                     value: session.getValue(),
                     selection: session.selection.toJSON(),
                     undoManager: session.$undoManager.toJSON(),
+                    scrollTop: session.getScrollTop(),
+                    scrollLeft: session.getScrollLeft(),
                 }
             }
 
