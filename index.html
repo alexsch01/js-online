@@ -14,35 +14,41 @@
         window.onload = async function() {
             globalThis.JSOnline_editor = ace.edit("code")
             globalThis.JSOnline_editor.setShowPrintMargin(false)
-            globalThis.JSOnline_editor.session.setUseWorker(false)
-            globalThis.JSOnline_editor.session.setMode("ace/mode/javascript")
+
+            const session = globalThis.JSOnline_editor.session
+            session.setUseWorker(false)
+            session.setMode("ace/mode/javascript")
 
             if(window.matchMedia('screen and (max-width: 768px)').matches) {
                 const mainDiv = document.querySelector('#mainDiv')
                 mainDiv.parentNode.insertBefore(document.querySelector('#output'), mainDiv.nextSibling)
-                mainDiv.parentNode.insertBefore(document.querySelector('#mainDiv > pre'), mainDiv.nextSibling)
+                mainDiv.parentNode.insertBefore(document.querySelector('pre'), mainDiv.nextSibling)
                 mainDiv.remove()
 
                 document.querySelector('pre').setAttribute('style', `width: 100%; height: ${Math.floor(window.innerHeight / 2)}px; font-size: 14px`)
                 document.querySelector('#output').setAttribute('style', `width: 100%; height: ${Math.floor(window.innerHeight / 2)}px; font-size: 14px`)
             } else {
-                document.querySelector('#mainDiv > pre').setAttribute('style', 'width: 50%; font-size: 18px')
+                document.querySelector('pre').setAttribute('style', 'width: 50%; font-size: 18px')
                 document.querySelector('#output').setAttribute('style', 'width: 50%; font-size: 18px')
             }
 
-            const localStorageData = JSON.parse(localStorage.getItem('js-online') ?? '{}')
+            const localStorageData = JSON.parse(localStorage.getItem('js-online'))
 
-            globalThis.JSOnline_editor.setValue(localStorageData['code'] ?? '')
-            document.querySelector('#output').value = localStorageData['output'] ?? ''
-            globalThis.JSOnline_editor.selection.moveTo(localStorageData['cursorRow'] ?? 0, localStorageData['cursorColumn'] ?? 0)
-            if('code' in localStorageData) {
+            if(localStorageData) {
+                document.querySelector('#output').value = localStorageData['output']
+                const state = localStorageData.ace_state
+
+                session.setValue(state.value)
+                session.selection.fromJSON(state.selection)
+                try {
+                    state.folds.forEach(fold => {
+                        session.addFold(fold.placeholder, Range.fromPoints(fold.start, fold.end))
+                    })
+                } catch(e) {}
+                session.setScrollTop(state.scrollTop)
+                session.setScrollTop(state.scrollLeft)
+
                 globalThis.JSOnline_editor.focus()
-            }
-
-            for(const key in localStorageData) {
-                if(key.startsWith('$undoManager')) {
-                    globalThis.JSOnline_editor.session.$undoManager[key.split('$undoManager-')[1]] = JSON.parse(localStorageData[key])
-                }
             }
 
             localStorage.removeItem('js-online')
@@ -76,17 +82,22 @@
                 arr.push(console.JSOnline_logs[i].join(" "))
             }
 
-            const localStorageData = {
-                code: globalThis.JSOnline_editor.getValue(),
-                output: arr.join("\n"),
-                cursorRow: globalThis.JSOnline_editor.selection.cursor.row,
-                cursorColumn: globalThis.JSOnline_editor.selection.cursor.column
-            }
+            const session = globalThis.JSOnline_editor.session
 
-            const undoManager = globalThis.JSOnline_editor.session.$undoManager
-            for(const key in undoManager) {
-                if(typeof undoManager[key] != 'function' && key != '$session') {
-                    localStorageData['$undoManager-' + key] = JSON.stringify(undoManager[key])
+            const localStorageData = {
+                output: arr.join("\n"),
+                ace_state: {
+                    value: session.getValue(),
+                    selection: session.selection.toJSON(),
+                    folds: session.getAllFolds().map(fold => {
+                        return {
+                            start       : fold.start,
+                            end         : fold.end,
+                            placeholder : fold.placeholder
+                        }
+                    }),
+                    scrollTop: session.getScrollTop(),
+                    scrollLeft: session.getScrollLeft()
                 }
             }
 
