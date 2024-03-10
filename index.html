@@ -17,6 +17,7 @@
 
             const session = globalThis.JSOnline_editor.session
             session.setUseWorker(false)
+            session.setUseWrapMode(true)
             session.setMode("ace/mode/javascript")
 
             if(window.matchMedia('screen and (max-width: 768px)').matches) {
