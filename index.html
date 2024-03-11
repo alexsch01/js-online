@@ -70,9 +70,9 @@
             console.JSOnline_logs.push(args)
         }
 
-        function JSOnline_runClick() {
+        async function JSOnline_runClick() {
             try {
-                eval(globalThis.JSOnline_editor.getValue())
+                await eval(globalThis.JSOnline_editor.getValue())
             } catch(err) {
                 console.JSOnline_logs.push([err])
             }
