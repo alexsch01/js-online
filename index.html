@@ -38,7 +38,7 @@
             if(localStorageData) {
                 localStorage.removeItem('js-online')
 
-                document.querySelector('#output').value = localStorageData['output']
+                document.querySelector('#output').value = localStorageData.output
                 const state = localStorageData.ace_state
 
                 session.setValue(state.value)
