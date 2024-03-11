@@ -36,6 +36,8 @@
             const localStorageData = JSON.parse(localStorage.getItem('js-online'))
 
             if(localStorageData) {
+                localStorage.removeItem('js-online')
+
                 document.querySelector('#output').value = localStorageData['output']
                 const state = localStorageData.ace_state
 
@@ -52,8 +54,6 @@
             } else {
                 session.setValue('')
             }
-
-            localStorage.removeItem('js-online')
         }
 
         console.JSOnline_logs = []
@@ -74,7 +74,7 @@
             try {
                 eval(globalThis.JSOnline_editor.getValue())
             } catch(err) {
-                console.JSOnline_logs.push([err.toString()])
+                console.JSOnline_logs.push([err])
             }
 
             const arr = []
