@@ -84,12 +84,23 @@
 
             const session = globalThis.JSOnline_editor.session
 
+            const undoManager = session.$undoManager.toJSON()
+            const undoStack = undoManager.$undoStack
+            for(let i=0; i<undoStack.length; i++) {
+                const eachUndo = undoStack[i]
+                for(let j=0; j<eachUndo.length; j++) {
+                    if(eachUndo[j].action == 'removeFolds') {
+                        eachUndo.splice(j, 1)
+                    }
+                }
+            }
+
             const localStorageData = {
                 output: arr.join("\n"),
                 ace_state: {
                     value: session.getValue(),
                     selection: session.selection.toJSON(),
-                    undoManager: session.$undoManager.toJSON(),
+                    undoManager,
                     scrollTop: session.getScrollTop(),
                     scrollLeft: session.getScrollLeft(),
                     folds: session.getAllFolds().map(fold => {
@@ -102,21 +113,7 @@
                 }
             }
 
-            // JSON.stringify(session.$undoManager.toJSON()) can lead to "circular structure to JSON" error
-            const getCircularReplacer = () => {
-                const seen = new WeakSet()
-                return (key, value) => {
-                    if (typeof value == "object" && value !== null) {
-                        if (seen.has(value)) {
-                            return
-                        }
-                        seen.add(value)
-                    }
-                    return value
-                }
-            }
-
-            localStorage.setItem('js-online', JSON.stringify(localStorageData, getCircularReplacer()))
+            localStorage.setItem('js-online', JSON.stringify(localStorageData))
 
             location.reload()
         }
