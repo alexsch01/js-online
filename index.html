@@ -102,7 +102,21 @@
                 }
             }
 
-            localStorage.setItem('js-online', JSON.stringify(localStorageData))
+            // JSON.stringify(session.$undoManager.toJSON()) can lead to "circular structure to JSON" error
+            const getCircularReplacer = () => {
+                const seen = new WeakSet()
+                return (key, value) => {
+                    if (typeof value == "object" && value !== null) {
+                        if (seen.has(value)) {
+                            return
+                        }
+                        seen.add(value)
+                    }
+                    return value
+                }
+            }
+
+            localStorage.setItem('js-online', JSON.stringify(localStorageData, getCircularReplacer()))
 
             location.reload()
         }
