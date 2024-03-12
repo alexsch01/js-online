@@ -71,6 +71,8 @@
         }
 
         async function JSOnline_runClick() {
+            document.querySelector('#output').value = ''
+
             try {
                 await eval(globalThis.JSOnline_editor.getValue())
             } catch(err) {
