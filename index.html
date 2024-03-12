@@ -70,6 +70,10 @@
             console.JSOnline_logs.push(args)
         }
 
+        globalThis.print = function(arg) {
+            console.log(JSON.stringify(arg, null, 2))
+        }
+
         async function JSOnline_runClick() {
             document.querySelector('#output').value = ''
 
