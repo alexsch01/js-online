@@ -68,6 +68,7 @@
                 }
             })
             console.JSOnline_logs.push(args)
+            document.querySelector('#output').value += args.join(" ") + "\n"
         }
 
         globalThis.print = function(arg) {
