@@ -79,7 +79,7 @@
             try {
                 await eval(globalThis.JSOnline_editor.getValue())
             } catch(err) {
-                document.querySelector('#output').value += err
+                console.log(err)
             }
 
             const session = globalThis.JSOnline_editor.session
