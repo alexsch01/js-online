@@ -56,7 +56,6 @@
             }
         }
 
-        console.JSOnline_logs = []
         console.log = function(...args) {
             args = args.map(elem => {
                 if(elem === undefined) {
@@ -67,7 +66,6 @@
                     return elem
                 }
             })
-            console.JSOnline_logs.push(args)
             document.querySelector('#output').value += args.join(" ") + "\n"
         }
 
@@ -81,12 +79,7 @@
             try {
                 await eval(globalThis.JSOnline_editor.getValue())
             } catch(err) {
-                console.JSOnline_logs.push([err])
-            }
-
-            const arr = []
-            for(const i in console.JSOnline_logs) {
-                arr.push(console.JSOnline_logs[i].join(" "))
+                document.querySelector('#output').value += err
             }
 
             const session = globalThis.JSOnline_editor.session
@@ -103,7 +96,7 @@
             }
 
             const localStorageData = {
-                output: arr.join("\n"),
+                output: document.querySelector('#output').value,
                 ace_state: {
                     value: session.getValue(),
                     selection: session.selection.toJSON(),
