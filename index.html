@@ -80,6 +80,8 @@
                 await eval(globalThis.JSOnline_editor.getValue())
             } catch(err) {
                 console.log(err.toString())
+            } finally {
+                new Promise(() => null)
             }
 
             const session = globalThis.JSOnline_editor.session
