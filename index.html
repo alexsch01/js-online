@@ -12,16 +12,16 @@
     
     <script>
         window.onload = function() {
-            let standaloneDisplay = false
+            let offline = false
             if(location.href.startsWith('file')) {
                 document.title = "JS Offline"
                 document.querySelector('#headerTitle').innerHTML = "JS Offline"
-                standaloneDisplay = true
+                offline = true
             }
 
             globalThis.JSOnline_editor = ace.edit("code")
 
-            if(standaloneDisplay && window.matchMedia('(display-mode: standalone)').matches) {
+            if(offline && window.matchMedia('(display-mode: standalone)').matches) {
                 globalThis.JSOnline_editor.focus()
             }
 
