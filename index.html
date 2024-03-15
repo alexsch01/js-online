@@ -12,14 +12,19 @@
     
     <script>
         window.onload = function() {
+            let standaloneDisplay = false
             if(location.href.startsWith('file')) {
                 document.title = "JS Offline"
                 document.querySelector('#headerTitle').innerHTML = "JS Offline"
             }
 
             globalThis.JSOnline_editor = ace.edit("code")
-            globalThis.JSOnline_editor.setShowPrintMargin(false)
 
+            if(standaloneDisplay && window.matchMedia('(display-mode: standalone)').matches) {
+                globalThis.JSOnline_editor.focus()
+            }
+
+            globalThis.JSOnline_editor.setShowPrintMargin(false)
             const session = globalThis.JSOnline_editor.session
             session.setUseWorker(false)
             session.setUseWrapMode(true)
