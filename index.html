@@ -16,6 +16,7 @@
             if(location.href.startsWith('file')) {
                 document.title = "JS Offline"
                 document.querySelector('#headerTitle').innerHTML = "JS Offline"
+                standaloneDisplay = true
             }
 
             globalThis.JSOnline_editor = ace.edit("code")
