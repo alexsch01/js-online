@@ -12,6 +12,11 @@
     
     <script>
         window.onload = function() {
+            if(location.href.startsWith('file')) {
+                document.title = "JS Offline"
+                document.querySelector('#headerTitle').innerHTML = "JS Offline"
+            }
+
             globalThis.JSOnline_editor = ace.edit("code")
             globalThis.JSOnline_editor.setShowPrintMargin(false)
 
@@ -20,12 +25,12 @@
             session.setUseWrapMode(true)
             session.setMode("ace/mode/javascript")
 
-            const button = document.querySelector('[onclick="JSOnline_runClick()"]')
+            const runButton = document.querySelector('#runButton')
             const mainDiv = document.querySelector('#mainDiv')
             const codeElement = mainDiv.querySelector('pre')
             const outputElement = mainDiv.querySelector('#output')
 
-            const height = window.innerHeight - mainDiv.offsetTop - 2 * button.offsetHeight
+            const height = window.innerHeight - mainDiv.offsetTop - 2 * runButton.offsetHeight
 
             if(window.matchMedia('screen and (max-width: 768px)').matches) {
                 mainDiv.setAttribute('style', 'display: flex; flex-direction: column; font-size: 14px')
@@ -127,8 +132,8 @@
     </script>
 </head>
 <body>
-    <strong style="margin-left: 10vw">JS Online</strong>
-    <button onclick="JSOnline_runClick()" style="margin-left: 30vw">Run</button>
+    <strong id="headerTitle" style="margin-left: 10vw">JS Online</strong>
+    <button id="runButton" onclick="JSOnline_runClick()" style="margin-left: 30vw">Run</button>
     <div id="mainDiv">
         <textarea id="code"></textarea>
         <textarea id="output" disabled wrap="off"></textarea>
