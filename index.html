@@ -20,17 +20,18 @@
             session.setUseWrapMode(true)
             session.setMode("ace/mode/javascript")
 
-            if(window.matchMedia('screen and (max-width: 768px)').matches) {
-                const mainDiv = document.querySelector('#mainDiv')
-                mainDiv.parentNode.insertBefore(document.querySelector('#output'), mainDiv.nextSibling)
-                mainDiv.parentNode.insertBefore(document.querySelector('pre'), mainDiv.nextSibling)
-                mainDiv.remove()
+            const mainDiv = document.querySelector('#mainDiv')
+            const codeElement = document.querySelector('div > pre')
+            const outputElement = document.querySelector('#output')
 
-                document.querySelector('pre').setAttribute('style', `width: 100%; height: ${Math.floor(window.innerHeight / 2)}px; font-size: 14px`)
-                document.querySelector('#output').setAttribute('style', `width: 100%; height: ${Math.floor(window.innerHeight / 2)}px; font-size: 14px`)
+            if(window.matchMedia('screen and (max-width: 768px)').matches) {
+                mainDiv.setAttribute('style', 'display: flex; flex-direction: column')
+                codeElement.setAttribute('style', `font-size: 14px; height: ${parseInt(window.innerHeight - mainDiv.offsetTop)/2}px`)
+                outputElement.setAttribute('style', `font-size: 14px; height: ${parseInt(window.innerHeight - mainDiv.offsetTop)/2}px`)
             } else {
-                document.querySelector('pre').setAttribute('style', 'width: 50%; font-size: 18px')
-                document.querySelector('#output').setAttribute('style', 'width: 50%; font-size: 18px')
+                mainDiv.setAttribute('style', 'display: flex')
+                codeElement.setAttribute('style', `width: 50%; font-size: 18px; height: ${window.innerHeight - mainDiv.offsetTop}px`)
+                outputElement.setAttribute('style', `width: 50%; font-size: 18px; height: ${window.innerHeight - mainDiv.offsetTop}px`)
             }
 
             const localStorageData = JSON.parse(localStorage.getItem('js-online'))
@@ -38,7 +39,7 @@
             if(localStorageData) {
                 localStorage.removeItem('js-online')
 
-                document.querySelector('#output').value = localStorageData.output
+                outputElement.value = localStorageData.output
                 const state = localStorageData.ace_state
 
                 session.setValue(state.value)
@@ -122,7 +123,7 @@
 <body>
     <strong style="margin-left: 10vw">JS Online</strong>
     <button onclick="JSOnline_runClick()" style="margin-left: 30vw">Run</button>
-    <div id="mainDiv" style="display: flex; height: 800px">
+    <div id="mainDiv">
         <textarea id="code"></textarea>
         <textarea id="output" disabled wrap="off"></textarea>
     </div>
