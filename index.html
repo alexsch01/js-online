@@ -20,18 +20,21 @@
             session.setUseWrapMode(true)
             session.setMode("ace/mode/javascript")
 
+            const button = document.querySelector('[onclick="JSOnline_runClick()"]')
             const mainDiv = document.querySelector('#mainDiv')
-            const codeElement = document.querySelector('div > pre')
-            const outputElement = document.querySelector('#output')
+            const codeElement = mainDiv.querySelector('pre')
+            const outputElement = mainDiv.querySelector('#output')
+
+            const height = window.innerHeight - mainDiv.offsetTop - 2 * button.offsetHeight
 
             if(window.matchMedia('screen and (max-width: 768px)').matches) {
-                mainDiv.setAttribute('style', 'display: flex; flex-direction: column')
-                codeElement.setAttribute('style', `font-size: 14px; height: ${parseInt(window.innerHeight - mainDiv.offsetTop)/2}px`)
-                outputElement.setAttribute('style', `font-size: 14px; height: ${parseInt(window.innerHeight - mainDiv.offsetTop)/2}px`)
+                mainDiv.setAttribute('style', 'display: flex; flex-direction: column; font-size: 14px')
+                codeElement.setAttribute('style', `font-size: inherit; height: ${parseInt(height / 2)}px`)
+                outputElement.setAttribute('style', `font-size: inherit; height: ${parseInt(height / 2)}px`)
             } else {
-                mainDiv.setAttribute('style', 'display: flex')
-                codeElement.setAttribute('style', `width: 50%; font-size: 18px; height: ${window.innerHeight - mainDiv.offsetTop}px`)
-                outputElement.setAttribute('style', `width: 50%; font-size: 18px; height: ${window.innerHeight - mainDiv.offsetTop}px`)
+                mainDiv.setAttribute('style', 'display: flex; font-size: 18px')
+                codeElement.setAttribute('style', `width: 50%; font-size: inherit; height: ${height}px`)
+                outputElement.setAttribute('style', `width: 50%; font-size: inherit; height: ${height}px`)
             }
 
             const localStorageData = JSON.parse(localStorage.getItem('js-online'))
