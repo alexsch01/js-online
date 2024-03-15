@@ -35,6 +35,9 @@
                 mainDiv.setAttribute('style', 'display: flex; font-size: 18px')
                 codeElement.setAttribute('style', `width: 50%; font-size: inherit; height: ${height}px`)
                 outputElement.setAttribute('style', `width: 50%; font-size: inherit; height: ${height}px`)
+
+                const offsetTopDifference = codeElement.offsetTop - outputElement.offsetTop
+                outputElement.style.marginTop = offsetTopDifference + "px"
             }
 
             const localStorageData = JSON.parse(localStorage.getItem('js-online'))
@@ -126,7 +129,6 @@
 <body>
     <strong style="margin-left: 10vw">JS Online</strong>
     <button onclick="JSOnline_runClick()" style="margin-left: 30vw">Run</button>
-    <br><br>
     <div id="mainDiv">
         <textarea id="code"></textarea>
         <textarea id="output" disabled wrap="off"></textarea>
