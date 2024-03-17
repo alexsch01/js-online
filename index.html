@@ -50,90 +50,21 @@
                 const offsetTopDifference = codeElement.offsetTop - outputElement.offsetTop
                 outputElement.style.marginTop = offsetTopDifference + "px"
             }
-
-            const localStorageData = JSON.parse(localStorage.getItem('js-online'))
-
-            if(localStorageData) {
-                localStorage.removeItem('js-online')
-
-                outputElement.value = localStorageData.output
-                const state = localStorageData.ace_state
-
-                session.setValue(state.value)
-                session.selection.fromJSON(state.selection)
-                session.$undoManager.fromJSON(state.undoManager)
-                session.setScrollTop(state.scrollTop)
-                session.setScrollLeft(state.scrollLeft)
-                state.folds.forEach(fold => {
-                    session.addFold(fold.placeholder, ace.Range.fromPoints(fold.start, fold.end))
-                })
-
-                globalThis.JSOnline_editor.focus()
-            } else {
-                session.setValue('')
-            }
-        }
-
-        console.log = function(...args) {
-            args = args.map(elem => {
-                if(elem === undefined) {
-                    return 'undefined'
-                } else if(typeof elem == 'object') {
-                    return JSON.stringify(elem)
-                } else {
-                    return elem
-                }
-            })
-            document.querySelector('#output').value += args.join(" ") + "\n"
-        }
-
-        globalThis.print = function(arg) {
-            console.log(JSON.stringify(arg, null, 2))
         }
 
         async function JSOnline_runClick() {
             document.querySelector('#output').value = ''
 
-            try {
-                await eval(globalThis.JSOnline_editor.getValue())
-            } catch(err) {
-                console.log(err.toString())
+            const worker = new Worker('task.js')
+            worker.postMessage({ queryMethodArguments: [globalThis.JSOnline_editor.getValue()]})
+            worker.onmessage = (event) => {
+                (output => {
+                    document.querySelector('#output').value = output
+                }).apply(worker, event.data.queryMethodArguments)
+
+                worker.terminate()
+                delete worker
             }
-
-            const session = globalThis.JSOnline_editor.session
-
-            const undoManager = session.$undoManager.toJSON()
-            const undoStack = undoManager.$undoStack
-            for(let i=0; i<undoStack.length; i++) {
-                const eachUndo = undoStack[i]
-                for(let j=0; j<eachUndo.length; j++) {
-                    if(eachUndo[j].action == 'removeFolds') {
-                        eachUndo.splice(j, 1)
-                    }
-                }
-            }
-
-            const localStorageData = {
-                output: document.querySelector('#output').value,
-                ace_state: {
-                    value: session.getValue(),
-                    selection: session.selection.toJSON(),
-                    undoManager,
-                    scrollTop: session.getScrollTop(),
-                    scrollLeft: session.getScrollLeft(),
-                    folds: session.getAllFolds().map(fold => {
-                        return {
-                            placeholder: fold.placeholder,
-                            start: fold.start,
-                            end: fold.end
-                        }
-                    }),
-                }
-            }
-
-            localStorage.setItem('js-online', JSON.stringify(localStorageData))
-
-            location.reload()
         }
     </script>
 </head>
