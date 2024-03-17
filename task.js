@@ -1,6 +1,3 @@
-delete self.name
-delete self.onmessageerror
-
 self.onmessage = (event) => {
   (async (code) => {
     let output = ""
