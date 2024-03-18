@@ -64,9 +64,8 @@
             const worker = new Worker('engine.js')
             worker.postMessage({ queryMethodArguments: [globalThis.JSOnline_editor.getValue()]})
             worker.onmessage = (event) => {
-                (output => {
-                    document.querySelector('#output').value = output
-                }).apply(worker, event.data.queryMethodArguments)
+                const output = event.data.queryMethodArguments[0]
+                document.querySelector('#output').value = output
 
                 const isDone = event.data.queryMethodArguments[1]
                 if(isDone) {
