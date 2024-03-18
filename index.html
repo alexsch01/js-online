@@ -61,7 +61,7 @@
                 lastWorker.terminate()
                 delete lastWorker
             }
-            const worker = new Worker('task.js')
+            const worker = new Worker('engine.js')
             worker.postMessage({ queryMethodArguments: [globalThis.JSOnline_editor.getValue()]})
             worker.onmessage = (event) => {
                 (output => {
