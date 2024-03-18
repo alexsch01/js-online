@@ -13,6 +13,7 @@ self.onmessage = (event) => {
           }
       })
       output += args.join(" ") + "\n"
+      postMessage({ queryMethodArguments: [output, false] })
     }
 
     globalThis.print = function(arg) {
@@ -25,6 +26,6 @@ self.onmessage = (event) => {
       console.log(err.toString())
     }
 
-    postMessage({ queryMethodArguments: [output] })
+    postMessage({ queryMethodArguments: [output, true] })
   }).apply(self, event.data.queryMethodArguments)
 }
