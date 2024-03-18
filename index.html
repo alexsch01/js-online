@@ -55,6 +55,12 @@
             worker.onmessage = (event) => {
                 const output = event.data.queryMethodArguments[0]
                 document.querySelector('#output').value = output
+
+                const isDone = event.data.queryMethodArguments[1]
+                if(isDone) {
+                    worker.terminate()
+                    delete worker
+                }
             }
             lastWorker = worker
         }
