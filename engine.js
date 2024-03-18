@@ -13,7 +13,7 @@ self.onmessage = async (event) => {
             }
         })
         output += args.join(" ") + "\n"
-        self.postMessage({ queryMethodArguments: [output] })
+        self.postMessage({ queryMethodArguments: [output, false] })
     }
 
     globalThis.print = function(arg) {
@@ -26,7 +26,6 @@ self.onmessage = async (event) => {
         console.log(err.toString())
     } finally {
         await new Promise(() => null)
+        self.postMessage({ queryMethodArguments: [output, true] })
     }
-
-    self.postMessage({ queryMethodArguments: [output] })
 }
