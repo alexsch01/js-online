@@ -24,6 +24,8 @@ self.onmessage = async (event) => {
         await eval(code)
     } catch(err) {
         console.log(err.toString())
+    } finally {
+        await new Promise(() => null)
     }
 
     self.postMessage({ queryMethodArguments: [output, true] })
