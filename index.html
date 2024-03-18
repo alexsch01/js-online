@@ -62,7 +62,7 @@
                 delete lastWorker
             }
             const worker = new Worker('engine.js')
-            worker.postMessage({ queryMethodArguments: [globalThis.JSOnline_editor.getValue()]})
+            worker.postMessage({ queryMethodArguments: [globalThis.JSOnline_editor.getValue()] })
             worker.onmessage = (event) => {
                 const output = event.data.queryMethodArguments[0]
                 document.querySelector('#output').value = output
