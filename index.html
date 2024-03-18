@@ -68,8 +68,11 @@
                     document.querySelector('#output').value = output
                 }).apply(worker, event.data.queryMethodArguments)
 
-                worker.terminate()
-                delete worker
+                const isDone = event.data.queryMethodArguments[1]
+                if(isDone) {
+                    worker.terminate()
+                    delete worker
+                }
             }
             lastWorker = worker
         }
