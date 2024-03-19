@@ -3,12 +3,10 @@ self.onmessage = async (event) => {
 
     console.log = function(...args) {
         args = args.map(elem => {
-            if(elem === undefined) {
-                return 'undefined'
-            } else if(typeof elem == 'object') {
-                return JSON.stringify(elem)
-            } else {
-                return elem
+            switch(typeof elem) {
+                case 'undefined': return 'undefined'
+                case 'object': return JSON.stringify(elem)
+                default: return elem
             }
         })
         output += args.join(" ") + "\n"
