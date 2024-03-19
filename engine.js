@@ -1,6 +1,5 @@
 self.onmessage = async (event) => {
     let output = ""
-    const code = event.data.queryMethodArguments[0]
 
     console.log = function(...args) {
         args = args.map(elem => {
@@ -13,7 +12,7 @@ self.onmessage = async (event) => {
             }
         })
         output += args.join(" ") + "\n"
-        self.postMessage({ queryMethodArguments: [output] })
+        self.postMessage({ output })
     }
 
     globalThis.print = function(arg) {
@@ -21,7 +20,7 @@ self.onmessage = async (event) => {
     }
 
     try {
-        await eval(code)
+        await eval(event.data.code)
     } catch(err) {
         console.log(err.toString())
     }
