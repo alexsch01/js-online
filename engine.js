@@ -24,7 +24,5 @@ self.onmessage = async (event) => {
         await eval(code)
     } catch(err) {
         console.log(err.toString())
-    } finally {
-        await new Promise(() => null)
     }
 }
