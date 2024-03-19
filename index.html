@@ -12,10 +12,10 @@
     
     <script>
         window.onload = function() {
-            const editor = ace.edit("code")
-            editor.setShowPrintMargin(false)
+            globalThis.codeEditor = ace.edit("code")
+            globalThis.codeEditor.setShowPrintMargin(false)
 
-            const session = globalThis.JSOnline_editor.session
+            const session = globalThis.codeEditor.session
             session.setUseWorker(false)
             session.setUseWrapMode(true)
             session.setMode("ace/mode/javascript")
@@ -49,7 +49,7 @@
 
             lastWorker?.terminate()
             const worker = new Worker('engine.js')
-            worker.postMessage({ queryMethodArguments: [globalThis.JSOnline_editor.getValue()] })
+            worker.postMessage({ queryMethodArguments: [globalThis.codeEditor.getValue()] })
             worker.onmessage = (event) => {
                 const output = event.data.queryMethodArguments[0]
                 document.querySelector('#output').value = output
