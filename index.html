@@ -47,10 +47,7 @@
         function JSOnline_runClick() {
             document.querySelector('#output').value = ''
 
-            if(lastWorker) {
-                lastWorker.terminate()
-                delete lastWorker
-            }
+            lastWorker?.terminate()
             const worker = new Worker('engine.js')
             worker.postMessage({ queryMethodArguments: [globalThis.JSOnline_editor.getValue()] })
             worker.onmessage = (event) => {
