@@ -48,7 +48,7 @@
             document.querySelector('#output').value = ''
 
             lastWorker?.terminate()
-            const worker = new Worker('engine.js')
+            const worker = new Worker('worker.js')
             worker.postMessage({ code: globalThis.codeEditor.getValue() })
             worker.onmessage = (event) => {
                 document.querySelector('#output').value = event.data.output
