@@ -1,15 +1,19 @@
 self.onmessage = async (event) => {
     let output = ""
 
-    const logFunc = function(space, onlyFirstArg) {
+    const logFunc = function(space, dirFunc) {
         return function(...args) {
-            if(onlyFirstArg) {
+            if(dirFunc) {
                 args = [args[0]]
             }
             
             args = args.map(elem => {
                 if(typeof elem == 'undefined') {
                     return 'undefined'
+                }
+                
+                if(dirFunc && typeof elem == 'string') {
+                    return JSON.stringify(elem)
                 }
                 
                 if(typeof elem != 'object' || elem == null) {
