@@ -22,7 +22,7 @@ self.onmessage = async (event) => {
                     }
                     
                     return value
-                })
+                }, space)
             })
             output += args.join(" ") + "\n"
             self.postMessage({ output })
