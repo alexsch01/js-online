@@ -1,8 +1,12 @@
 self.onmessage = async (event) => {
     let output = ""
 
-    const logFuncWithSpace = function(space) {
+    const logFunc = function(space, onlyFirstArg) {
         return function(...args) {
+            if(onlyFirstArg) {
+                args = [args[0]]
+            }
+            
             args = args.map(elem => {
                 if(typeof elem == 'undefined') {
                     return 'undefined'
@@ -29,8 +33,8 @@ self.onmessage = async (event) => {
         }
     }
 
-    console.log = logFuncWithSpace(0)
-    globalThis.print = logFuncWithSpace(2)
+    console.log = logFunc(0)
+    console.dir = logFunc(2, true)
 
     try {
         await eval(event.data.code)
