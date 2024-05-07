@@ -19,7 +19,7 @@ self.onmessage = async (event) => {
                         return elem
                     }
                 }
-
+                
                 if(elem.constructor.prototype.toString != Object.prototype.toString) {
                     if(!(
                         elem.constructor.name == 'Array' ||
