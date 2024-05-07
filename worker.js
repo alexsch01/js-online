@@ -1,23 +1,33 @@
 self.onmessage = async (event) => {
     let output = ""
 
-    const logFunc = function(space, dirFunc) {
+    const logFunc = function(space) {
         return function(...args) {
-            if(dirFunc) {
+            if(space == 2) {
                 args = [args[0]]
             }
             
             args = args.map(elem => {
-                if(typeof elem == 'undefined') {
-                    return 'undefined'
+                if(elem == null) {
+                    return "" + elem
                 }
                 
-                if(dirFunc && typeof elem == 'string') {
-                    return JSON.stringify(elem)
+                if(typeof elem != 'object') {
+                    if(space == 2) {
+                        return JSON.stringify(elem)
+                    } else {
+                        return elem
+                    }
                 }
-                
-                if(typeof elem != 'object' || elem == null) {
-                    return elem
+
+                if(elem.constructor.prototype.toString != Object.prototype.toString) {
+                    if(!(
+                        elem.constructor.name == 'Array' ||
+                        elem.constructor.name == 'Date' ||
+                        false
+                    )) {
+                        return elem.toString()
+                    }
                 }
                 
                 return JSON.stringify(elem, (key, value) => {
@@ -38,7 +48,7 @@ self.onmessage = async (event) => {
     }
 
     console.log = logFunc(0)
-    console.dir = logFunc(2, true)
+    console.dir = logFunc(2)
 
     try {
         await eval(event.data.code)
