@@ -21,7 +21,12 @@ self.onmessage = async (event) => {
                 }
 
                 if(elem.constructor.prototype.toString != 'function toString() { [native code] }') {
-                    return elem.toString()
+                    const elemToString = elem.toString()
+                    if(elemToString == null) {
+                        return `${elem}`
+                    } else {
+                        return elemToString
+                    }
                 }
                 
                 return JSON.stringify(elem, (key, value) => {
