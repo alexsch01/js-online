@@ -23,7 +23,7 @@ self.onmessage = async (event) => {
                 if(elem.constructor.prototype.toString != 'function toString() { [native code] }') {
                     const elemToString = elem.toString()
                     if(elemToString == null) {
-                        return `${elem}`
+                        return `${elemToString}`
                     } else {
                         return elemToString
                     }
