@@ -9,7 +9,7 @@ self.onmessage = async (event) => {
             
             args = args.map(elem => {
                 if(elem == null) {
-                    return "" + elem
+                    return `${elem}`
                 }
                 
                 if(typeof elem != 'object') {
@@ -19,15 +19,9 @@ self.onmessage = async (event) => {
                         return elem
                     }
                 }
-                
-                if(elem.constructor.prototype.toString != Object.prototype.toString) {
-                    if(!(
-                        elem.constructor.name == 'Array' ||
-                        elem.constructor.name == 'Date' ||
-                        false
-                    )) {
-                        return elem.toString()
-                    }
+
+                if(elem.constructor.prototype.toString != 'function toString() { [native code] }') {
+                    return elem.toString()
                 }
                 
                 return JSON.stringify(elem, (key, value) => {
