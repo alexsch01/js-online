@@ -8,7 +8,7 @@ self.onmessage = async (event) => {
             }
             
             args = args.map(elem => {
-                if(elem != null && elem.toString && elem.toString != 'function toString() { [native code] }') {
+                if(elem != null && typeof elem.toString == 'function' && elem.toString != 'function toString() { [native code] }') {
                     elem = elem.toString()
                 }
                 
