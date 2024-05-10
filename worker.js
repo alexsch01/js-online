@@ -8,6 +8,10 @@ self.onmessage = async (event) => {
             }
             
             args = args.map(elem => {
+                if(elem.constructor && elem.constructor.prototype.toString != 'function toString() { [native code] }') {
+                    elem = elem.toString()
+                }
+                
                 if(elem == null) {
                     return `${elem}`
                 }
@@ -17,15 +21,6 @@ self.onmessage = async (event) => {
                         return JSON.stringify(elem)
                     } else {
                         return elem
-                    }
-                }
-
-                if(elem.constructor.prototype.toString != 'function toString() { [native code] }') {
-                    const elemToString = elem.toString()
-                    if(elemToString == null) {
-                        return `${elemToString}`
-                    } else {
-                        return elemToString
                     }
                 }
                 
