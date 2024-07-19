@@ -34,7 +34,7 @@ self.onmessage = async (event) => {
                     }
                     
                     if(value.constructor.name != 'Object') {
-                        value.__constructor = value.constructor.name
+                        value.__constructor = value.constructor.name || 'Generator'
                     }
                     
                     return value
