@@ -11,7 +11,7 @@ self.onmessage = async (event) => {
                 if(
                     elem != null &&
                     typeof elem.toString == 'function' &&
-                    elem.toString != 'function toString() { [native code] }'
+                    elem.toString.toString() != Object.toString.toString()
                 ) {
                     elem = elem.toString()
                 }
