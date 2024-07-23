@@ -1,4 +1,5 @@
 self.onmessage = async (event) => {
+{
     let output = ""
 
     const logFunc = function(space) {
@@ -47,6 +48,7 @@ self.onmessage = async (event) => {
 
     console.log = logFunc(0)
     console.dir = logFunc(2)
+}
 
     try {
         await eval(event.data.code)
