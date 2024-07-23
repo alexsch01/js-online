@@ -65,6 +65,7 @@ self.onmessage = async (event) => {
         }
 
         console.log(`${timer}: ${Date.now() - dict[timer]} ms`)
+        delete dict[timer]
     }
 }
 
