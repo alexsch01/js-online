@@ -48,6 +48,24 @@ self.onmessage = async (event) => {
 
     console.log = logFunc(0)
     console.dir = logFunc(2)
+
+    const dict = {}
+
+    console.time = function(timer='default') {
+        if(timer in dict) {
+            throw new Error(`Timer '${timer}' already exists`)
+        }
+
+        dict[timer] = Date.now()
+    }
+
+    console.timeEnd = function(timer='default') {
+        if(!(timer in dict)) {
+            throw new Error(`Timer '${timer}' does not exist`)
+        }
+
+        console.log(`${timer}: ${Date.now() - dict[timer]} ms`)
+    }
 }
 
     try {
