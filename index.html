@@ -19,7 +19,6 @@
             session.setUseWorker(false)
             session.setUseWrapMode(true)
             session.setMode("ace/mode/javascript")
-            session.setValue("")
 
             const runButton = document.querySelector('#runButton')
             const mainDiv = document.querySelector('#mainDiv')
@@ -27,6 +26,7 @@
             const outputElement = mainDiv.querySelector('#output')
 
             const height = window.innerHeight - mainDiv.offsetTop - 2 * runButton.offsetHeight
+            codeElement.querySelector('textarea').autocomplete = 'off'
 
             if(window.matchMedia('screen and (max-width: 768px)').matches) {
                 mainDiv.setAttribute('style', 'display: flex; flex-direction: column; font-size: 14px')
@@ -62,7 +62,7 @@
     <button id="runButton" onclick="runClick()" style="margin-left: 30vw">Run</button>
     <div id="mainDiv">
         <textarea id="code"></textarea>
-        <textarea id="output" disabled wrap="off"></textarea>
+        <textarea id="output" disabled wrap="off" autocomplete="off"></textarea>
     </div>
 </body>
 </html>
