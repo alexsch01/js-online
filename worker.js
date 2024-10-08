@@ -30,15 +30,19 @@ self.onmessage = async (event) => {
                 }
                 
                 return JSON.stringify(elem, (key, value) => {
-                    if(typeof value != 'object' || value == null) {
+                    if(key === "" || value !== elem) {
+                        if(typeof value != 'object' || value == null) {
+                            return value
+                        }
+                        
+                        if(value.constructor.name != 'Object') {
+                            value.__constructor = value.constructor.name || 'Generator'
+                        }
+                        
                         return value
                     }
-                    
-                    if(value.constructor.name != 'Object') {
-                        value.__constructor = value.constructor.name || 'Generator'
-                    }
-                    
-                    return value
+
+                    return '[Circular]'
                 }, space)
             })
             output += args.join(" ") + "\n"
