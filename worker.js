@@ -4,8 +4,8 @@ self.onmessage = async (event) => {
 
     const logFunc = function(space) {
         return function(...args) {
-            if(space == 2) {
-                args = [args[0]]
+            if(space == 2 && args.length != 1) {
+                throw new Error('console.dir must have exactly one argument')
             }
             
             args = args.map(elem => {
