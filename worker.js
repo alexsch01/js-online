@@ -72,6 +72,6 @@ self.onmessage = async (event) => {
     try {
         await eval(event.data.code)
     } catch(err) {
-        console.log(err.message)
+        console.log(err.toString())
     }
 }
