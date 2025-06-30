@@ -42,7 +42,7 @@ self.onmessage = async (event) => {
                         try {
                             JSON.stringify(value)
                         } catch(err) {
-                            if(err.message.split('\n')[0].includes("circular")) {
+                            if(err instanceof TypeError && err.message.split('\n')[0].includes("circular")) {
                                 return "[circular object]"
                             }
                         }
