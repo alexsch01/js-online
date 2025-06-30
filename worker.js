@@ -37,6 +37,16 @@ self.onmessage = async (event) => {
                     if(value.constructor.name != 'Object') {
                         value.__constructor = value.constructor.name || 'Generator'
                     }
+
+                    if(key != "") {
+                        try {
+                            JSON.stringify(value)
+                        } catch(err) {
+                            if(err.message.split('\n')[0].includes("circular")) {
+                                return "[circular object]"
+                            }
+                        }
+                    }
                     
                     return value
                 }, space)
