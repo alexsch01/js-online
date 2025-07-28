@@ -9,39 +9,45 @@
     </style>
 
     <script src="./ace-editor/ace.js"></script>
-    
+</head>
+<body>
+    <strong style="margin-left: 10vw">JS Online</strong>
+    <button id="runButton" onclick="runClick()" style="margin-left: 30vw">Run</button>
+    <div id="mainDiv">
+        <textarea id="code"></textarea>
+        <textarea id="output" disabled wrap="off" autocomplete="off"></textarea>
+    </div>
+
     <script>
-        window.onload = function() {
-            globalThis.codeEditor = ace.edit("code")
-            globalThis.codeEditor.setShowPrintMargin(false)
+        globalThis.codeEditor = ace.edit("code")
+        globalThis.codeEditor.setShowPrintMargin(false)
 
-            delete globalThis.codeEditor.keyBinding.$defaultHandler.commandKeyBinding["insert"]
+        delete globalThis.codeEditor.keyBinding.$defaultHandler.commandKeyBinding["insert"]
 
-            const session = globalThis.codeEditor.session
-            session.setUseWorker(false)
-            session.setUseWrapMode(true)
-            session.setMode("ace/mode/javascript")
+        const session = globalThis.codeEditor.session
+        session.setUseWorker(false)
+        session.setUseWrapMode(true)
+        session.setMode("ace/mode/javascript")
 
-            const runButton = document.querySelector('#runButton')
-            const mainDiv = document.querySelector('#mainDiv')
-            const codeElement = mainDiv.querySelector('pre')
-            const outputElement = mainDiv.querySelector('#output')
+        const runButton = document.querySelector('#runButton')
+        const mainDiv = document.querySelector('#mainDiv')
+        const codeElement = mainDiv.querySelector('pre')
+        const outputElement = mainDiv.querySelector('#output')
 
-            const height = window.innerHeight - mainDiv.offsetTop - 2 * runButton.offsetHeight
-            codeElement.querySelector('textarea').autocomplete = 'off'
+        const height = window.innerHeight - mainDiv.offsetTop - 2 * runButton.offsetHeight
+        codeElement.querySelector('textarea').autocomplete = 'off'
 
-            if(window.matchMedia('screen and (max-width: 768px)').matches) {
-                mainDiv.setAttribute('style', 'display: flex; flex-direction: column; font-size: 14px')
-                codeElement.setAttribute('style', `font-size: inherit; height: ${parseInt(height / 2)}px`)
-                outputElement.setAttribute('style', `font-size: inherit; height: ${parseInt(height / 2)}px`)
-            } else {
-                mainDiv.setAttribute('style', 'display: flex; font-size: 18px')
-                codeElement.setAttribute('style', `width: 50%; font-size: inherit; height: ${height}px`)
-                outputElement.setAttribute('style', `width: 50%; font-size: inherit; height: ${height}px`)
+        if(window.matchMedia('screen and (max-width: 768px)').matches) {
+            mainDiv.setAttribute('style', 'display: flex; flex-direction: column; font-size: 14px')
+            codeElement.setAttribute('style', `font-size: inherit; height: ${parseInt(height / 2)}px`)
+            outputElement.setAttribute('style', `font-size: inherit; height: ${parseInt(height / 2)}px`)
+        } else {
+            mainDiv.setAttribute('style', 'display: flex; font-size: 18px')
+            codeElement.setAttribute('style', `width: 50%; font-size: inherit; height: ${height}px`)
+            outputElement.setAttribute('style', `width: 50%; font-size: inherit; height: ${height}px`)
 
-                const offsetTopDifference = codeElement.offsetTop - outputElement.offsetTop
-                outputElement.style.marginTop = offsetTopDifference + "px"
-            }
+            const offsetTopDifference = codeElement.offsetTop - outputElement.offsetTop
+            outputElement.style.marginTop = offsetTopDifference + "px"
         }
 
         let lastWorker
@@ -58,13 +64,5 @@
             lastWorker = worker
         }
     </script>
-</head>
-<body>
-    <strong style="margin-left: 10vw">JS Online</strong>
-    <button id="runButton" onclick="runClick()" style="margin-left: 30vw">Run</button>
-    <div id="mainDiv">
-        <textarea id="code"></textarea>
-        <textarea id="output" disabled wrap="off" autocomplete="off"></textarea>
-    </div>
 </body>
 </html>
