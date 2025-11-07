@@ -29,7 +29,7 @@ self.onmessage = async (event) => {
                     }
                 }
                 
-                return JSON.stringify(elem, (key, value) => {
+                return JSON.stringify(elem, (_, value) => {
                     if(typeof value != 'object' || value == null) {
                         return value
                     }
@@ -42,7 +42,7 @@ self.onmessage = async (event) => {
                 }, space)
             })
             output += args.join(" ") + "\n"
-            self.postMessage({ output })
+            self.postMessage(output)
         }
     }
 
@@ -70,7 +70,7 @@ self.onmessage = async (event) => {
 }
 
     try {
-        await eval(event.data.code)
+        await eval(event.data)
     } catch(err) {
         console.log(err.toString())
     }
