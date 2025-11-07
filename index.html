@@ -57,9 +57,9 @@
 
             lastWorker?.terminate()
             const worker = new Worker('worker.js')
-            worker.postMessage({ code: globalThis.codeEditor.getValue() })
+            worker.postMessage(globalThis.codeEditor.getValue())
             worker.onmessage = (event) => {
-                document.querySelector('#output').value = event.data.output
+                document.querySelector('#output').value = event.data
             }
             lastWorker = worker
         }
