@@ -1,10 +1,9 @@
 self.onmessage = async (event) => {
-{
     let output = ""
 
     const logFunc = function(space) {
         return function(...args) {
-            if(space == 2 && args.length != 1) {
+            if(space != null && args.length != 1) {
                 throw new Error('console.dir must have exactly one argument')
             }
             
@@ -22,7 +21,7 @@ self.onmessage = async (event) => {
                 }
                 
                 if(typeof elem != 'object') {
-                    if(space == 2) {
+                    if(space != null) {
                         return JSON.stringify(elem)
                     } else {
                         return elem
@@ -46,7 +45,7 @@ self.onmessage = async (event) => {
         }
     }
 
-    console.log = logFunc(0)
+    console.log = logFunc(null)
     console.dir = logFunc(2)
 
     const dict = {}
@@ -67,7 +66,6 @@ self.onmessage = async (event) => {
         console.log(`${timer}: ${Date.now() - dict[timer]} ms`)
         delete dict[timer]
     }
-}
 
     try {
         await eval(event.data)
