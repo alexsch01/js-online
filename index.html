@@ -35,7 +35,6 @@
         }
     
         #output {
-            field-sizing: content;
             min-height: 200px;
             max-height: 100%;
             resize: vertical;
@@ -72,18 +71,16 @@
         session.setUseWrapMode(true)
         session.setMode("ace/mode/javascript")
 
-        const outputElement = document.querySelector('#output')
-
         let lastWorker
 
         function runClick() {
-            outputElement.value = ''
+            document.querySelector('#output').value = ''
 
             lastWorker?.terminate()
             const worker = new Worker('worker.js')
             worker.postMessage(globalThis.codeEditor.getValue())
             worker.onmessage = (event) => {
-                outputElement.value = event.data
+                document.querySelector('#output').value = event.data
             }
             lastWorker = worker
         }
