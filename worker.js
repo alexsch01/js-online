@@ -1,70 +1,72 @@
 self.onmessage = async (event) => {
-    let output = ""
-
-    const logFunc = function(space) {
-        return function(...args) {
-            if(space != null && args.length != 1) {
-                throw new Error('console.dir must have exactly one argument')
-            }
-            
-            args = args.map(elem => {
-                if(
-                    elem != null &&
-                    typeof elem.toString == 'function' &&
-                    elem.toString.toString() != Object.toString.toString()
-                ) {
-                    elem = elem.toString()
+    {
+        let output = ""
+    
+        const logFunc = function(space) {
+            return function(...args) {
+                if(space != null && args.length != 1) {
+                    throw new Error('console.dir must have exactly one argument')
                 }
                 
-                if(elem == null) {
-                    return `${elem}`
-                }
-                
-                if(typeof elem != 'object') {
-                    if(space != null) {
-                        return JSON.stringify(elem)
-                    } else {
-                        return elem
+                args = args.map(elem => {
+                    if(
+                        elem != null &&
+                        typeof elem.toString == 'function' &&
+                        elem.toString.toString() != Object.toString.toString()
+                    ) {
+                        elem = elem.toString()
                     }
-                }
-                
-                return JSON.stringify(elem, (_, value) => {
-                    if(typeof value != 'object' || value == null) {
+                    
+                    if(elem == null) {
+                        return `${elem}`
+                    }
+                    
+                    if(typeof elem != 'object') {
+                        if(space != null) {
+                            return JSON.stringify(elem)
+                        } else {
+                            return elem
+                        }
+                    }
+                    
+                    return JSON.stringify(elem, (_, value) => {
+                        if(typeof value != 'object' || value == null) {
+                            return value
+                        }
+                        
+                        if(value.constructor.name != 'Object') {
+                            value.__constructor = value.constructor.name || 'Generator'
+                        }
+                        
                         return value
-                    }
-                    
-                    if(value.constructor.name != 'Object') {
-                        value.__constructor = value.constructor.name || 'Generator'
-                    }
-                    
-                    return value
-                }, space)
-            })
-            output += args.join(" ") + "\n"
-            self.postMessage(output)
+                    }, space)
+                })
+                output += args.join(" ") + "\n"
+                self.postMessage(output)
+            }
         }
-    }
-
-    console.log = logFunc(null)
-    console.dir = logFunc(2)
-
-    const dict = {}
-
-    console.time = function(timer='default') {
-        if(timer in dict) {
-            throw new Error(`Timer '${timer}' already exists`)
+    
+        console.log = logFunc(null)
+        console.dir = logFunc(2)
+    
+        const dict = {}
+    
+        console.time = function(timer='default') {
+            if(timer in dict) {
+                throw new Error(`Timer '${timer}' already exists`)
+            }
+    
+            dict[timer] = Date.now()
         }
-
-        dict[timer] = Date.now()
-    }
-
-    console.timeEnd = function(timer='default') {
-        if(!(timer in dict)) {
-            throw new Error(`Timer '${timer}' does not exist`)
+    
+        console.timeEnd = function(timer='default') {
+            if(!(timer in dict)) {
+                throw new Error(`Timer '${timer}' does not exist`)
+            }
+    
+            console.log(`${timer}: ${Date.now() - dict[timer]} ms`)
+            delete dict[timer]
         }
-
-        console.log(`${timer}: ${Date.now() - dict[timer]} ms`)
-        delete dict[timer]
     }
 
     try {
