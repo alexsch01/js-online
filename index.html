@@ -6,15 +6,58 @@
     <title>JS Online</title>
     <style>
         .ace_mobile-menu { display: none !important }
+    
+        * { box-sizing: border-box }
+    
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            overflow: hidden;
+        }
+    
+        body {
+            padding-top: 10px;
+        }
+    
+        #mainDiv {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 10px;
+            height: calc(100vh - 70px);
+        }
+    
+        #code, #output {
+            width: 100%;
+            height: 50%;
+            font-size: 14px;
+        }
+    
+        #output {
+            field-sizing: content;
+            min-height: 200px;
+            max-height: 100%;
+            resize: vertical;
+            overflow: auto;
+        }
+    
+        @media (min-width: 769px) {
+            #mainDiv { flex-direction: row }
+            #code, #output {
+                height: 100%;
+                font-size: 18px;
+            }
+            #output { resize: none }
+        }
     </style>
-
     <script src="./ace-editor/ace.js"></script>
 </head>
 <body>
     <strong style="margin-left: 10vw">JS Online</strong>
-    <button id="runButton" onclick="runClick()" style="margin-left: 30vw">Run</button>
+    <button onclick="runClick()" style="margin-left: 30vw">Run</button>
     <div id="mainDiv">
-        <textarea id="code"></textarea>
+        <div id="code"></div>
         <textarea id="output" disabled wrap="off" autocomplete="off"></textarea>
     </div>
 
@@ -29,37 +72,18 @@
         session.setUseWrapMode(true)
         session.setMode("ace/mode/javascript")
 
-        const runButton = document.querySelector('#runButton')
-        const mainDiv = document.querySelector('#mainDiv')
-        const codeElement = mainDiv.querySelector('pre')
-        const outputElement = mainDiv.querySelector('#output')
-
-        const height = window.innerHeight - mainDiv.offsetTop - 2 * runButton.offsetHeight
-        codeElement.querySelector('textarea').autocomplete = 'off'
-
-        if(window.matchMedia('screen and (max-width: 768px)').matches) {
-            mainDiv.setAttribute('style', 'display: flex; flex-direction: column; font-size: 14px')
-            codeElement.setAttribute('style', `font-size: inherit; height: ${parseInt(height / 2)}px`)
-            outputElement.setAttribute('style', `font-size: inherit; height: ${parseInt(height / 2)}px`)
-        } else {
-            mainDiv.setAttribute('style', 'display: flex; font-size: 18px')
-            codeElement.setAttribute('style', `width: 50%; font-size: inherit; height: ${height}px`)
-            outputElement.setAttribute('style', `width: 50%; font-size: inherit; height: ${height}px`)
-
-            const offsetTopDifference = codeElement.offsetTop - outputElement.offsetTop
-            outputElement.style.marginTop = offsetTopDifference + "px"
-        }
+        const outputElement = document.querySelector('#output')
 
         let lastWorker
 
         function runClick() {
-            document.querySelector('#output').value = ''
+            outputElement.value = ''
 
             lastWorker?.terminate()
             const worker = new Worker('worker.js')
             worker.postMessage(globalThis.codeEditor.getValue())
             worker.onmessage = (event) => {
-                document.querySelector('#output').value = event.data
+                outputElement.value = event.data
             }
             lastWorker = worker
         }
