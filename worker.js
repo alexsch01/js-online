@@ -22,7 +22,7 @@ self.onmessage = async (event) => {
                     }
                     
                     if(typeof elem != 'object') {
-                        if(space != null) {
+                        if(space != null && typeof elem != 'function') {
                             return JSON.stringify(elem)
                         } else {
                             return elem
