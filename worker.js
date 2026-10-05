@@ -1,13 +1,13 @@
 self.onmessage = async (event) => {
     {
         let output = ""
-    
+
         const logFunc = function(space) {
             return function(...args) {
                 if(space != null && args.length != 1) {
                     throw new Error('console.dir must have exactly one argument')
                 }
-                
+
                 args = args.map(elem => {
                     if(
                         elem != null &&
@@ -16,11 +16,11 @@ self.onmessage = async (event) => {
                     ) {
                         elem = elem.toString()
                     }
-                    
+
                     if(elem == null) {
                         return `${elem}`
                     }
-                    
+
                     if(typeof elem != 'object') {
                         if(space != null && typeof elem != 'function') {
                             return JSON.stringify(elem)
@@ -28,16 +28,16 @@ self.onmessage = async (event) => {
                             return elem
                         }
                     }
-                    
+
                     return JSON.stringify(elem, (_, value) => {
                         if(typeof value != 'object' || value == null) {
                             return value
                         }
-                        
+
                         if(value.constructor.name != 'Object') {
                             value.__constructor = value.constructor.name || 'Generator'
                         }
-                        
+
                         return value
                     }, space)
                 })
@@ -45,28 +45,32 @@ self.onmessage = async (event) => {
                 self.postMessage(output)
             }
         }
-    
+
         console.log = logFunc(null)
         console.dir = logFunc(2)
-    
+
         const dict = {}
-    
+
         console.time = function(timer='default') {
             if(timer in dict) {
                 throw new Error(`Timer '${timer}' already exists`)
             }
-    
+
             dict[timer] = Date.now()
         }
-    
+
         console.timeEnd = function(timer='default') {
             if(!(timer in dict)) {
                 throw new Error(`Timer '${timer}' does not exist`)
             }
-    
+
             console.log(`${timer}: ${Date.now() - dict[timer]} ms`)
             delete dict[timer]
         }
+
+        Object.keys(self).forEach(key => {
+            if (key !== 'postMessage') delete self[key]
+        })
     }
 
     try {
