@@ -1,5 +1,8 @@
 self.onmessage = async (event) => {
     {
+        const postMessage = self.postMessage
+        delete self.postMessage
+
         let output = ""
 
         const logFunc = function(space) {
@@ -42,7 +45,7 @@ self.onmessage = async (event) => {
                     }, space)
                 })
                 output += args.join(" ") + "\n"
-                self.postMessage(output)
+                postMessage(output)
             }
         }
 
@@ -69,7 +72,7 @@ self.onmessage = async (event) => {
         }
 
         Object.keys(self).forEach(key => {
-            if (key !== 'postMessage') delete self[key]
+            delete self[key]
         })
     }
 
