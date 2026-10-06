@@ -1,7 +1,9 @@
 self.onmessage = async (event) => {
     {
         const postMessage = self.postMessage
-        delete self.postMessage
+        Object.keys(self).forEach(key => {
+            delete self[key]
+        })
 
         let output = ""
 
@@ -70,10 +72,6 @@ self.onmessage = async (event) => {
             console.log(`${timer}: ${Date.now() - dict[timer]} ms`)
             delete dict[timer]
         }
-
-        Object.keys(self).forEach(key => {
-            delete self[key]
-        })
     }
 
     try {
