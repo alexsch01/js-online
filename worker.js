@@ -35,7 +35,7 @@ self.onmessage = async (event) => {
                     }
 
                     return JSON.stringify(elem, (_, value) => {
-                        if(typeof value != 'object' || value == null) {
+                        if(typeof value != 'object' || value == null || value.constructor == null) {
                             return value
                         }
 
