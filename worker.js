@@ -5,6 +5,8 @@ self.onmessage = async (event) => {
             delete self[key]
         })
 
+        const GeneratorObjectProto = Object.getPrototypeOf((function*(){})).prototype
+
         let output = ""
 
         const logFunc = function(space) {
@@ -39,8 +41,12 @@ self.onmessage = async (event) => {
                             return value
                         }
 
-                        if(value.constructor.name != 'Object') {
-                            value.__constructor = value.constructor.name || 'Generator'
+                        if(GeneratorObjectProto.isPrototypeOf(value)) {
+                            value.__constructor = 'Generator'
+                        }
+
+                        if(value.constructor.name != null && value.constructor.name != 'Object') {
+                            value.__constructor = value.constructor.name
                         }
 
                         return value
