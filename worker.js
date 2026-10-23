@@ -43,10 +43,12 @@ self.onmessage = async (event) => {
 
                         if(GeneratorObjectProto.isPrototypeOf(value)) {
                             value.__constructor = 'Generator'
+                            return value
                         }
 
                         if(value.constructor.name != null && value.constructor.name != 'Object') {
                             value.__constructor = value.constructor.name
+                            return value
                         }
 
                         return value
